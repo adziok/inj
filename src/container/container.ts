@@ -4,6 +4,7 @@ import { BindTo } from '../bindings/bind-to';
 import { interfaces } from "../interfaces";
 import { Registry } from '../registry/registry';
 import 'reflect-metadata';
+import { ReflectKeys } from '../constants/inject';
 
 export class Container implements interfaces.Container {
     id: number;
@@ -21,9 +22,6 @@ export class Container implements interfaces.Container {
         const target = this.registry.get(key);
 
         const result = this._resolve(target);
-        // const requiredParams = Reflect.getMetadata('design:paramtypes', target) || [];
-        // const resolvedParams = requiredParams.map((param: any) => this.injectionInterpreter<T>(param));
-        // const instance = new target(...resolvedParams);
 
         return result as T;
     }
@@ -42,7 +40,7 @@ export class Container implements interfaces.Container {
         }
 
         if (target.type === ResolvableTypesEnum.CONSTRUCTOR) {
-            const requiredParams = Reflect.getMetadata('design:paramtypes', target.value) || [];
+            const requiredParams = Reflect.getMetadata(ReflectKeys.CLASS_CONSTRUCTOR_PARAMS, target.value) || [];
             const args = requiredParams.map((param: interfaces.BindIdentifier<any>) => this.resolve(param));
 
             return new target.value(...args);

@@ -1,3 +1,4 @@
+import { ReflectKeys } from "../constants/inject";
 import { interfaces } from "../interfaces";
 
 export const Inject = (key: interfaces.InjectKeys): any => (
@@ -5,9 +6,9 @@ export const Inject = (key: interfaces.InjectKeys): any => (
     propertyKey: string,
     parameterIndex: number
 ) => {
-    const constructorParams = Reflect.getMetadata('design:paramtypes', target);
+    const constructorParams = Reflect.getMetadata('design:paramtypes', target) || [];
 
     constructorParams[parameterIndex] = key || constructorParams[parameterIndex];
 
-    Reflect.defineMetadata('design:paramtypes', constructorParams, target);
+    Reflect.defineMetadata(ReflectKeys.CLASS_CONSTRUCTOR_PARAMS, constructorParams, target);
 };
