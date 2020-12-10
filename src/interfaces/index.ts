@@ -51,4 +51,6 @@ export namespace interfaces {
         add<T, K extends BindIdentifier<T>>(key: K, target: Resolvable): void;
         get<T, K extends BindIdentifier<T>>(key: K): Resolvable;
     }
+
+    export type InjectKeys = string | Newable<any>| symbol;
 }
