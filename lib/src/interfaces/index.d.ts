@@ -1,21 +1,17 @@
-export namespace interfaces {
-    export type BindingScopes = 'SINGLETON' | 'REQUEST' | 'DEFAULT';
-
-    export interface BindingScopesEnum {
-        SINGLETON: BindingScopes
-        REQUEST: BindingScopes
-        DEFAULT: BindingScopes
+export declare namespace interfaces {
+    type BindingScopes = 'SINGLETON' | 'REQUEST' | 'DEFAULT';
+    interface BindingScopesEnum {
+        SINGLETON: BindingScopes;
+        REQUEST: BindingScopes;
+        DEFAULT: BindingScopes;
     }
-
-    export type ResolvableTypes = 'FUNCTION' | 'CONSTANT' | 'CONSTRUCTOR';
-
-    export interface ResolvableTypesEnum {
-        FUNCTION: ResolvableTypes
-        CONSTANT: ResolvableTypes
-        CONSTRUCTOR: ResolvableTypes
+    type ResolvableTypes = 'FUNCTION' | 'CONSTANT' | 'CONSTRUCTOR';
+    interface ResolvableTypesEnum {
+        FUNCTION: ResolvableTypes;
+        CONSTANT: ResolvableTypes;
+        CONSTRUCTOR: ResolvableTypes;
     }
-
-    export interface Container {
+    interface Container {
         id: number;
         parent: Container | null;
         options: any;
@@ -23,22 +19,17 @@ export namespace interfaces {
         resolve<T>(key: interfaces.BindIdentifier<T>): T;
         bind<T>(key: interfaces.BindIdentifier<T>): BindTo<T>;
     }
-
-    export type Newable<T> = new (...args: any[]) => T;
-
-    export interface BindTo<T> {
+    type Newable<T> = new (...args: any[]) => T;
+    interface BindTo<T> {
         to(target: Newable<T>, exported?: boolean): void;
         toValue(target: any, exported?: boolean): void;
     }
-
-    export interface BindOptions<T> {
+    interface BindOptions<T> {
         identifier: BindIdentifier<T>;
         scope: BindingScopes;
     }
-
-    export type BindIdentifier<T> = (string | symbol | Newable<T>);
-
-    export interface Resolvable<T = any> {
+    type BindIdentifier<T> = (string | symbol | Newable<T>);
+    interface Resolvable<T = any> {
         identifier: BindIdentifier<T>;
         type: ResolvableTypes;
         scope: BindingScopes;
@@ -47,13 +38,11 @@ export namespace interfaces {
         resolve(): T;
         setParentId(parentId: number): void;
     }
-
-    export interface Registry {
+    interface Registry {
         hasKey<K extends BindIdentifier<any>>(key: K): boolean;
         add<T, K extends BindIdentifier<T>>(key: K, target: Resolvable): void;
         get<T, K extends BindIdentifier<T>>(key: K): Resolvable;
         getExported(): Resolvable[];
     }
-
-    export type InjectKeys = string | Newable<any>| symbol;
+    type InjectKeys = string | Newable<any> | symbol;
 }

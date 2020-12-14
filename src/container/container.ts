@@ -1,10 +1,12 @@
+import 'reflect-metadata';
+
 import { ResolvableTypesEnum } from '../constants/resolvable-types';
 import { Resolvable } from '../resolve/resolvable';
 import { BindTo } from '../bindings/bind-to';
 import { interfaces } from "../interfaces";
 import { Registry } from '../registry/registry';
-import 'reflect-metadata';
 import { ReflectKeys } from '../constants/inject';
+import { generateId } from '../utils/generate-id';
 
 export class Container implements interfaces.Container {
     id: number;
@@ -14,7 +16,23 @@ export class Container implements interfaces.Container {
     private cache = new Map();
     private instances = new Map();
     private exports = new Map();
-    private imports = new Map();
+    private imports = [];
+
+    constructor() {
+        this.id = generateId()
+    }
+
+    load(container: Container) {
+        const exported = container.registry.getExported()
+
+        exported.map(v => this.registry.add(v.identifier, v));
+    }
+
+    unload(container: Container) {
+        const exported = container.registry.getExported()
+
+        exported.map(v => this.registry.add(v.identifier, v))
+    }
 
     resolve<T>(key: interfaces.BindIdentifier<T>): T {
         if (!this.registry.hasKey(key)) throw new Error('Can\'t resolve dependency, key not exist');
@@ -28,6 +46,7 @@ export class Container implements interfaces.Container {
 
     bind<T>(key: interfaces.BindIdentifier<T>): interfaces.BindTo<T> {
         const resolvable = new Resolvable(key);
+        resolvable.setParentId(this.id);
 
         this.registry.add(key, resolvable);
 

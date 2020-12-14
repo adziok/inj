@@ -4,3 +4,7 @@ npm-debug.log
 
 tests
 /src
+src
+tsconfig.json
+tslint.json
+.prettierrc

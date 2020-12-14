@@ -17,6 +17,8 @@
         "noUnusedParameters": false,
         "noUnusedLocals": false,
         "strictNullChecks": true,
+        "declaration": true,
+        "outDir": "./lib",
         "plugins": [
           { "name": "typescript-tslint-plugin" }
         ]

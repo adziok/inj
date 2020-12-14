@@ -19,4 +19,15 @@ export class Registry implements interfaces.Registry {
 
         return value;
     }
+
+    getExported(): interfaces.Resolvable<any>[] {
+        const exported: interfaces.Resolvable[] = []
+        this._map.forEach((idenitfier, value) => {
+            if (idenitfier.exported) {
+                exported.push(idenitfier)
+            }
+        });
+
+        return exported;
+    }
 }
